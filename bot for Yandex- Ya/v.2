@@ -1,0 +1,37 @@
+// ==UserScript==
+// @name         Bot for YANDEX/YA v.2
+// @namespace    http://tampermonkey.net/
+// @version      0.2
+// @description  try to take over the world!
+// @author       You
+// @match        https://yandex.ru/*
+// @match        https://ya.ru/*
+// @grant        none
+// ==/UserScript==
+
+let button_yandex = document.getElementsByClassName('button mini-suggest__button button_theme_websearch button_size_ws-head i-bem')[0];
+let button_ya = document.getElementsByClassName('button suggest2-form__button button_theme_websearch button_size_xl i-bem')[0];
+let keywords = ["Гобой", "Как звучит флейта", "Что такое валторна", "Как выглядит тромбон", "Виолончель", "Музыкальные диктанты онлайн"];
+let keyword = keywords[getRandom(0,keywords.length)];
+
+if (button_yandex !=undefined){
+    document.getElementsByClassName('input__control input__input mini-suggest__input')[0].value = keyword;
+    setTimeout(()=>button_yandex.click(),getRandom(3000,8000));
+}
+else if (button_ya !=undefined){
+    document.getElementsByClassName('input__control input__input')[0].value = keyword;
+    setTimeout(()=>button_ya.click(),getRandom(2000,7000));
+}
+
+let links = document.links;
+for(let i=0; i<links.length; i++){
+    if (links[i].href.indexOf('xn----7sbab5aqcbiddtdj1e1g.xn--p1ai')!=-1){
+        let link = links[i];
+        setTimeout(()=>link.click(),getRandom(2000,8000));
+        break;
+ }
+}
+
+function getRandom(min,max){
+  return Math.floor(Math.random()*(max-min)+min);
+}
