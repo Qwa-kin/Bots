@@ -58,19 +58,6 @@ else {
 else location.href = 'https://yandex.ru/';
 }
 
-/*if (location.host == "www.ya.ru"){
-    getYaPage();
-}
-else {
-    if (getRandom(0,100)>20){
-       let index = getRandom(0,links.length);
-       if (links[index].href.indexOf('xn----7sbab5aqcbiddtdj1e1g.xn--p1ai')!=-1)
-           setTimeout(()=>{links[index].click();},getRandom(3000,10000));
-       else location.href = 'https://xn----7sbab5aqcbiddtdj1e1g.xn--p1ai/';
-       }
-else location.href = 'https://yandex.ru/';
-}*/
-
 function getRandom(min,max){
   return Math.floor(Math.random()*(max-min)+min);
 }
