@@ -1,0 +1,82 @@
+// ==UserScript==
+// @name         Bot for YANDEX/YA v.3
+// @namespace    http://tampermonkey.net/
+// @version      0.3
+// @description  try to take over the world!
+// @author       You
+// @match        https://yandex.ru/*
+// @match        https://ya.ru/*
+// @match        https://xn----7sbab5aqcbiddtdj1e1g.xn--p1ai/*
+// @grant        none
+// ==/UserScript==
+
+let button_yandex = document.getElementsByClassName('button mini-suggest__button button_theme_websearch button_size_ws-head i-bem')[0];
+let button_ya = document.getElementsByClassName('button suggest2-form__button button_theme_websearch button_size_xl i-bem')[0];
+let buttonNextPage = document.getElementsByClassName('link link_theme_none link_target_serp pager__item pager__item_kind_next i-bem')[0];
+let keywords = ["Гобой", "Как звучит флейта", "Что такое валторна", "Как выглядит тромбон", "Виолончель", "Музыкальные диктанты онлайн"];
+let keyword = keywords[getRandom(0,keywords.length)];
+
+if (button_yandex!=undefined){
+   function writeWord(keyword){
+    let i = 0;
+    let timerId = setInterval(()=>{
+        document.getElementsByClassName('input__control mini-suggest__input')[0].value += keyword[i];
+        i++;
+        if (i==keyword.length) {
+            clearInterval(timerId);
+             button_yandex.click();
+            }
+        },300);
+ }
+}
+else if (button_ya !=undefined){
+  function writeWord(keyword){
+    let i = 0;
+    let timerId = setInterval(()=>{
+        document.getElementsByClassName('input__control input__input')[0].value += keyword[i];
+        i++;
+        if (i==keyword.length) {
+            clearInterval(timerId);
+            button_ya.click();
+             }
+        },400);
+  }
+}
+
+let links = document.links;
+
+if (location.host == "www.yandex.ru"){
+     getYandexPage();
+}
+else {
+    if (getRandom(0,100)>30){
+        let index = getRandom(0,links.length);
+        if (links[index].href.indexOf('xn----7sbab5aqcbiddtdj1e1g.xn--p1ai')!=-1)
+            setTimeout(()=>{links[index].click();},getRandom(7000,10000));
+        else location.href = 'https://xn----7sbab5aqcbiddtdj1e1g.xn--p1ai/';
+        }
+else location.href = 'https://yandex.ru/';
+}
+
+function getRandom(min,max){
+  return Math.floor(Math.random()*(max-min)+min);
+}
+
+
+function getYandexPage(){
+    let goNextPage = true;
+    for(let i=0; i<links.length; i++){
+        if (links[i].target == '_blank');
+            links[i].removeAttribute('target'); /*$('a[target="_blank"]').removeAttr('target');*/
+        if (links[i].href.indexOf('xn----7sbab5aqcbiddtdj1e1g.xn--p1ai')!=-1){
+            let link = links[i];
+            goNextPage = false;
+            setTimeout(()=>link.click(),getRandom(7000,10000));
+            break;
+        }
+    }
+    if (goNextPage) setTimeout(()=>{
+        if (document.getElementsByClassName('pager__items')[0].innerText == 5) ('logo logo_type_link logo_name_ys-ru-86x35 link i-bem')[0].click();
+        else buttonNextPage.click()
+    },getRandom(7000,10000));
+}
